@@ -1,30 +1,32 @@
 package main
 
 import (
-    "errors"
-    "fourth/pkg/constants"
-    "io"
-    "log"
-    "net/http"
-    "os"
+	"errors"
+	"fourth/pkg/constants"
+	"io"
+	"log"
+	"net/http"
+	"os"
 )
 
 func main() {
-    log.Println(constants.LogServerStarted)
-    http.HandleFunc("/", getRoot)
-    http.HandleFunc("/hello", getHello)
+	log.Println(constants.LogServerStarted)
 
-    ListeningStart()
+	ListeningStart()
 }
 
 func ListeningStart() {
-    if err := http.ListenAndServe("", nil);
-    errors.Is(err, http.ErrServerClosed) {
-        log.Printf(constants.LogServerClosed)
-    } else if err != nil {
-        log.Println(constants.LogServerErrSt, err)
-        os.Exit(1)
-    }
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/", getRoot)
+	mux.HandleFunc("/hello", getHello)
+
+	if err := http.ListenAndServe("", mux); errors.Is(err, http.ErrServerClosed) {
+		log.Printf(constants.LogServerClosed)
+	} else if err != nil {
+		log.Println(constants.LogServerErrSt, err)
+		os.Exit(1)
+	}
 }
 
 func getRoot(w http.ResponseWriter, r *http.Request) {
@@ -33,9 +35,9 @@ func getRoot(w http.ResponseWriter, r *http.Request) {
 }
 func getHello(w http.ResponseWriter, r *http.Request) {
 	log.Printf(constants.LogHelloAddr)
-    io.WriteString(w, constants.HelloAddr)
+	io.WriteString(w, constants.HelloAddr)
 }
 
-func (receiver ) name()  {
-    
+func (receiver) name() {
+
 }
