@@ -20,18 +20,22 @@ func main() {
 func ListeningStart() {
     if err := http.ListenAndServe("", nil);
     errors.Is(err, http.ErrServerClosed) {
-        log.Printf("server closed\n")
+        log.Printf(constants.LogServerClosed)
     } else if err != nil {
-        log.Printf("error starting server: %s\n", err)
+        log.Println(constants.LogServerErrSt, err)
         os.Exit(1)
     }
 }
 
 func getRoot(w http.ResponseWriter, r *http.Request) {
-	log.Printf("got / request\n")
-	io.WriteString(w, "Not-using URL!\nPlease, type correct.\n")
+	log.Printf(constants.LogRootAddr)
+	io.WriteString(w, constants.RootAddr)
 }
 func getHello(w http.ResponseWriter, r *http.Request) {
-	log.Printf("got /hello request\n")
-    io.WriteString(w, "Hello, HTTP!\n")
+	log.Printf(constants.LogHelloAddr)
+    io.WriteString(w, constants.HelloAddr)
+}
+
+func (receiver ) name()  {
+    
 }
