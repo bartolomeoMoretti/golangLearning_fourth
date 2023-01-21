@@ -1,27 +1,37 @@
 package main
 
 import (
-    "github.com/labstack/echo/v4"
-//    "github.com/labstack/echo/v4/middleware"
+    "errors"
+    "fourth/pkg/constants"
+    "io"
+    "log"
     "net/http"
+    "os"
 )
 
 func main() {
-    // Echo instance
-    e := echo.New()
+    log.Println(constants.LogServerStarted)
+    http.HandleFunc("/", getRoot)
+    http.HandleFunc("/hello", getHello)
 
-    // Middleware
-    /*e.Use(middleware.Logger())
-    e.Use(middleware.Recover())*/
-
-    // Routes
-    e.GET("/", hello)
-
-    // Start server
-    e.Logger.Fatal(e.Start(":1323"))
+    ListeningStart()
 }
 
-// Handler
-func hello(c echo.Context) error {
-    return c.String(http.StatusOK, "Hello, World!")
+func ListeningStart() {
+    if err := http.ListenAndServe("", nil);
+    errors.Is(err, http.ErrServerClosed) {
+        log.Printf("server closed\n")
+    } else if err != nil {
+        log.Printf("error starting server: %s\n", err)
+        os.Exit(1)
+    }
+}
+
+func getRoot(w http.ResponseWriter, r *http.Request) {
+	log.Printf("got / request\n")
+	io.WriteString(w, "Not-using URL!\nPlease, type correct.\n")
+}
+func getHello(w http.ResponseWriter, r *http.Request) {
+	log.Printf("got /hello request\n")
+    io.WriteString(w, "Hello, HTTP!\n")
 }
