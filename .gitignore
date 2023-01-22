@@ -1,3 +1,4 @@
 /cmd/first/*.exe
 /cmd/fourth/*.exe
 /.fleet
+/internal
