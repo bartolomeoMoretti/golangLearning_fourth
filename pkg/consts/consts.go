@@ -1,7 +1,7 @@
-package constants
+package consts
 
 const (
-    LogServerStarted = "Server started"
+    SrvStrd = "Server started"
     LogServerClosed = "Server closed\n"
     LogServerErrSt = "Error starting server: \n"
     LogRootAddr = "got / request\n"
@@ -9,4 +9,5 @@ const (
     LogHelloAddr = "got /hello request\n"
     HelloAddr = "Hello, HTTP!\n"
     UserRoleDetected = "Detected user-role: "
+    KeySvrAddr = "Server address"
 )

@@ -4,17 +4,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"fourth/pkg/constants"
+    "fourth/pkg/consts"
 	"io"
 	"log"
 	"net"
 	"net/http"
 )
 
-const keyServerAddr = "serverAddr"
-
 func main() {
-	log.Println(constants.LogServerStarted)
+    log.Println(consts.SrvStrd)
 
 	ListeningStart()
 }
@@ -22,7 +20,6 @@ func main() {
 func ListeningStart() {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", getRoot)
 	mux.HandleFunc("/hello", getHello)
 
 	ctx := context.Background()
@@ -30,7 +27,7 @@ func ListeningStart() {
 		Addr:    ":3333",
 		Handler: mux,
 		BaseContext: func(l net.Listener) context.Context {
-			ctx = context.WithValue(ctx, keyServerAddr, l.Addr().String())
+            ctx = context.WithValue(ctx, consts.KeySvrAddr, l.Addr().String())
 			return ctx
 		},
 	}
@@ -43,24 +40,16 @@ func ListeningStart() {
 	}
 }
 
-func getRoot(w http.ResponseWriter, r *http.Request) {
+func getHello(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	//hasFirst := r.URL.Query().Has("first")
 	first := r.URL.Query().Get("first")
-	//hasSecond := r.URL.Query().Has("second")
 	second := r.URL.Query().Get("second")
 
-	fmt.Printf("%s: got / request. first=%s, second=%s\n",
-		ctx.Value(keyServerAddr),
+	log.Printf("%s: got / request. first=%s, second=%s\n",
+        ctx.Value(consts.KeySvrAddr),
 		first,
 		second)
 
 	io.WriteString(w, "This is my website!\n")
-}
-func getHello(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	fmt.Printf("%s: got /hello request\n", ctx.Value(keyServerAddr))
-	io.WriteString(w, "Hello, HTTP!\n")
 }
